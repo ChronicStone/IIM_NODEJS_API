@@ -1,5 +1,5 @@
 module.exports = (app) => {
-    require('./accounts.routes.js')(app)
-    require('./licenses.routes.js')(app)
-    require('./chapters.routes.js')(app)
+    require('./player.routes.js')(app)
+    require('./quizz.routes.js')(app)
+    require('./user.routes.js')(app)
 }
