@@ -1,14 +1,14 @@
 const db = require("../models")
 
-exports.createChaptere = (req, res) => {
+exports.createUser = (req, res) => {
     if(!req.params.licenseId) {
-        res.send({success: false, message: "Missing license ID as parameter"})
+        res.send({success: false, message: "Missing quizz ID as parameter"})
         return;
     }
 
-    db.chapter.create({
+    db.User.create({
         license_id: req.body.license_id,
-        chapter_number: req.body.chapter_number,
+        User_number: req.body.User_number,
         title: req.body.title,
         summary: req.body.summary
     }).then((data) => {
@@ -19,28 +19,32 @@ exports.createChaptere = (req, res) => {
     })
 }
 
-exports.updateChaptere = (req, res) => {
+exports.editUser = (req, res) => {
 
 }
 
-exports.getChapterById = (req, res) => {
+exports.getAllUser = (req, res) => {
 
 }
 
-exports.deleteChapter = (req, res) => {
-    if(!req.params.chapterId) {
-        res.send({success: false, message: "Missing chapter ID as parameter"})
+exports.getUserById = (req, res) => {
+
+}
+
+exports.deleteUser = (req, res) => {
+    if(!req.params.UserId) {
+        res.send({success: false, message: "Missing User ID as parameter"})
         return;
     }
 
-    db.page.destroy({
+    db.User.destroy({
         where: {
-            chapter_id: req.params.chapterId
+            User_id: req.params.UserId
         }
     }).then(() => {
-        db.chapter.destroy({
+        db.User.destroy({
             where: {
-                id: req.params.chapterId
+                id: req.params.UserId
             }
         }).then(() => {
             res.send({success: true})
