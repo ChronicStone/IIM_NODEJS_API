@@ -1,28 +1,20 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define('comments', {
+    return sequelize.define('awnser', {
         id: {
             type: DataTypes.INTEGER(20),
             allowNull: false,
             autoIncrement: true,
             primaryKey: true
         },
-        license_id: {
-            type: DataTypes.INTEGER(20),
-            allowNull: true
-        },
-        chapter_id: {
-            type: DataTypes.INTEGER(20),
-            allowNull: true
-        },
-        account_id: {
+        questionId: {
             type: DataTypes.INTEGER(20),
             allowNull: false
         },
-        message: {
+        awnserInput: {
             type: DataTypes.TEXT,
             allowNull: false
         }
     }, {
-        tableName: "comments"
+        tableName: "awnser"
     })
 }

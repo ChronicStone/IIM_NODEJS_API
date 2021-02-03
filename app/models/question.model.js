@@ -1,28 +1,24 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define('chapters', {
+    return sequelize.define('question', {
         id: {
             type: DataTypes.INTEGER(20),
             allowNull: false,
             autoIncrement: true,
             primaryKey: true
         },
-        license_id: {
+        quizzId: {
             type: DataTypes.INTEGER(20),
             allowNull: false
         },
-        chapter_number: {
-            type: DataTypes.STRING(255),
+        questionInput: {
+            type: DataTypes.TEXT,
             allowNull: false
         },
-        title: {
-            type: DataTypes.STRING(255),
-            allowNull: true
+        correctAwnserId: {
+            type: DataTypes.INTEGER(20),
+            allowNull: false
         },
-        summary: {
-            type: DataTypes.TEXT,
-            allowNull: true
-        }
     }, {
-        tableName: "chapters"
+        tableName: 'question'
     })
 }

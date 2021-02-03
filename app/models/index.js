@@ -19,23 +19,29 @@ var db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.account = require("./accounts.model.js")(sequelize, Sequelize);
-db.license = require("./licenses.model.js")(sequelize, Sequelize);
-db.chapter = require("./chapters.model.js")(sequelize, Sequelize);
-db.page = require('./pages.model.js')(sequelize, Sequelize);
-db.comment = require('./comments.model.js')(sequelize, Sequelize);
 
-db.license.hasMany(db.chapter, { foreignKey: "license_id", CONSTRAINT: false })
-db.chapter.belongsTo(db.license, { foreignKey: "license_id" })
+db.quizz = require("./quizz.model.js")(sequelize, Sequelize);
+db.question = require("./question.model.js")(sequelize, Sequelize);
+db.awnser = require("./awnser.model.js")(sequelize, Sequelize);
+db.player = require("./player.model.js")(sequelize, Sequelize);
+db. playerScore = require("./playerScore.model.js")(sequelize, Sequelize);
 
-db.chapter.hasMany(db.page, { foreignKey: "chapter_id", CONSTRAINT: false })
-db.page.belongsTo(db.chapter, { foreignKey: "chapter_id" })
 
-db.license.hasMany(db.comment, {foreignKey: "license_id", CONSTRAINT: false})
-db.comment.belongsTo(db.license, { foreignKey: "license_id" })
+db.quizz.hasMany(db.question, { foreignKey: "quizzId", CONSTRAINT: false })
+db.question.belongsTo(db.quizz, { foreignKey: "quizzId" })
 
-db.chapter.hasMany(db.comment, {foreignKey: "chapter_id", CONSTRAINT: false})
-db.comment.belongsTo(db.chapter, { foreignKey: "chapter_id" })
+db.question.hasMany(db.awnser, { foreignKey: "quizzId", CONSTRAINT: false })
+db.awnser.belongsTo(db.question, { foreignKey: "quizzId" })
+
+db.player.hasMany(db.playerScore, { foreignKey: "playerId", CONSTRAINT: false })
+db.playerScore.belongsTo(db.player, { foreignKey: "playerId" })
+
+db.player.hasMany(db.quizz, { foreignKey: "creatorPlayerId", CONSTRAINT: false })
+db.quizz.belongsTo(db.player, { foreignKey: "creatorPlayerId" })
+
+db.quizz.hasMany(db.playerScore, { foreignKey: "quizzId", CONSTRAINT: false })
+db.playerScore.belongsTo(db.quizz, { foreignKey: "quizzId" })
+
 
 module.exports = db;
 
