@@ -2,9 +2,10 @@ module.exports = (app) => {
     const Quizz = require('../controllers/quizz.controller.js')
     
     app.post('/quizz/create', Quizz.createQuizz)
-    app.put('/quizz/update/:Id', Quizz.editQuizz)
+    app.put('/quizz/edit/:id', Quizz.editQuizz)
     app.get('/quizz', Quizz.getAllQuizz)
-    app.get('/quizz/:Id', Quizz.findQuizzById)
-    app.delete('/quizz/disable/:Id', Quizz.disableQuizz)
-    app.delete('/quizz/delete/:Id', Quizz.deleteQuizz)
+    app.get('/quizz/:id', Quizz.getQuizzById)
+    app.delete('/quizz/disable/:id', Quizz.disableQuizz)
+    app.delete('/quizz/delete/:id', Quizz.deleteQuizz)
+   
 }

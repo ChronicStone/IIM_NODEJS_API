@@ -24,7 +24,7 @@ db.quizz = require("./quizz.model.js")(sequelize, Sequelize);
 db.question = require("./question.model.js")(sequelize, Sequelize);
 db.awnser = require("./awnser.model.js")(sequelize, Sequelize);
 db.player = require("./player.model.js")(sequelize, Sequelize);
-db. playerScore = require("./playerScore.model.js")(sequelize, Sequelize);
+db.playerScore = require("./playerScore.model.js")(sequelize, Sequelize);
 
 
 db.quizz.hasMany(db.question, { foreignKey: "quizzId", CONSTRAINT: false })
