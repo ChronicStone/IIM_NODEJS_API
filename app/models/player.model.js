@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define('quizz', {
+    return sequelize.define('player', {
         id: {
             type: DataTypes.INTEGER(20),
             allowNull: false,
@@ -11,10 +11,10 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         password: {
-            type: DataTypes.INTEGER(20),
+            type: DataTypes.STRING(255),
             allowNull: false
         }
     }, {
-        tableName: "quizz"
+        tableName: "player"
     })
 }

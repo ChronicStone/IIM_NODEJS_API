@@ -18,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER(20),
             allowNull: false
         },
+        published: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        },
         disabled: {
             type: DataTypes.BOOLEAN,
             allowNull: false,

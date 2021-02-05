@@ -1,0 +1,102 @@
+{
+    "id": 1,
+    "title": "",
+    "description": "",
+    "creatorPlayerId": 1,
+    "disabled": false,
+    "question": [
+        {
+            "id": 1,
+            "quizzId": 1,
+            "questionInput": "Quel ReactHook utilise-on pour créer une variable dite 'reactive' ?",
+            "awnsers": [
+                {
+                    "id": 1,
+                    "questionId": 1,
+                    "awnserInput": "The 'useState' hook",
+                    "isRightAwnser": true
+                },
+                {
+                    "id": 2,
+                    "questionId": 1,
+                    "awnserInput": "The ReactHooks does not allow to have reactive properties",
+                    "isRightAwnser": false
+                },
+                {
+                    "id": 3,
+                    "questionId": 1,
+                    "awnserInput": "The 'useEffect' hook",
+                    "isRightAwnser": false
+                },
+                {
+                    "id": 4,
+                    "questionId": 1,
+                    "awnserInput": "The 'useContext' hook",
+                    "isRightAwnser": false
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "quizzId": 1,
+            "questionInput": "Quel ReactHook utilise-on pour créer une variable dite 'reactive' ?",
+            "awnsers": [
+                {
+                    "id": 1,
+                    "questionId": 2,
+                    "awnserInput": "The 'useState' hook",
+                    "isRightAwnser": true
+                },
+                {
+                    "id": 2,
+                    "questionId": 2,
+                    "awnserInput": "The ReactHooks does not allow to have reactive properties",
+                    "isRightAwnser": false
+                },
+                {
+                    "id": 3,
+                    "questionId": 2,
+                    "awnserInput": "The 'useEffect' hook",
+                    "isRightAwnser": false
+                },
+                {
+                    "id": 4,
+                    "questionId": 2,
+                    "awnserInput": "The 'useContext' hook",
+                    "isRightAwnser": false
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "quizzId": 1,
+            "questionInput": "Quel ReactHook utilise-on pour créer une variable dite 'reactive' ?",
+            "awnsers": [
+                {
+                    "id": 1,
+                    "questionId": 3,
+                    "awnserInput": "The 'useState' hook",
+                    "isRightAwnser": true
+                },
+                {
+                    "id": 2,
+                    "questionId": 3,
+                    "awnserInput": "The ReactHooks does not allow to have reactive properties",
+                    "isRightAwnser": false
+                },
+                {
+                    "id": 3,
+                    "questionId": 3,
+                    "awnserInput": "The 'useEffect' hook",
+                    "isRightAwnser": false
+                },
+                {
+                    "id": 4,
+                    "questionId": 3,
+                    "awnserInput": "The 'useContext' hook",
+                    "isRightAwnser": false
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>A4 landscape</title>
+
+  <!-- Normalize or reset CSS with your favorite library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+
+  <!-- Load paper.css for happy printing -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.4.1/paper.css">
+
+  <!-- Set page size here: A5, A4 or A3 -->
+  <!-- Set also "landscape" if you need -->
+  <style>@page { size: A4 landscape }</style>
+</head>
+
+<!-- Set "A5", "A4" or "A3" for class name -->
+<!-- Set also "landscape" if you need -->
+<body class="A4 landscape">
+
+  <!-- Each sheet element should have the class "sheet" -->
+  <!-- "padding-**mm" is optional: you can set 10, 15, 20 or 25 -->
+  <section class="sheet padding-10mm globalBloc">
+
+
+    <div class="marquee">
+        Certificate of Quizz Completion
+    </div>
+
+    <div class="assignment" style="margin-top:70px;margin-bottom:50px;">
+        Score : <%= playerScore %> / <%= quizzTotalScore %>
+    </div>
+
+    <div class="person">
+        Player : <%= playerName %>
+    </div>
+
+    <div class="reason">
+        Quizz Name : <%= quizzName %> | Author : <%= quizzAuthorName %>
+    </div>
+  </section>
+
+</body>
+
+<style type='text/css'>
+    .globalBloc {
+        border: 20px inset #D2B48C;
+    }
+
+    body, html {
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        color: black;
+        display: table;
+        font-family: Georgia, serif;
+        font-size: 24px;
+        text-align: center;
+    }
+    .container {
+        border: 20px solid tan;
+        width: 750px;
+        height: 563px;
+        display: table-cell;
+        vertical-align: middle;
+    }
+    .logo {
+        color: tan;
+    }
+
+    .marquee {
+        color: tan;
+        font-size: 48px;
+        margin: 20px;
+    }
+    .assignment {
+        margin: 20px;
+    }
+    .person {
+        border-bottom: 2px solid black;
+        padding:25px;
+        font-size: 32px;
+        font-style: italic;
+        margin: 20px auto;
+        width: 800px;
+    }
+    .reason {
+        margin: 20px;
+    }
+</style>
+
+</html>
