@@ -49,17 +49,22 @@ const deleteFile = (fileKey, callback) => {
     })
 }
 
-const compilePdfData = (playerScoreId, callback) => {
-    let playerScoreData = {
-        quizzId: 1,
-        playerScore: 19,
-        quizzTotalScore: 20,
-        playerName: "Cypri",
-        quizzName: "React beginner quizz",
-        quizzAuthorName: "John Doe"
+const compilePdfData = async (playerScoreId, callback) => {
+    let playerScoreRes = await db.playerScore.findOne({where: { id: playerScoreId }})
+    let player = await db.player.findOne({where: {id: playerScoreRes.playerId}})
+    let quizz = await db.quizz.findOne({where: {id: playerScoreRes.quizzId}})
+    let quizzAuthor = await db.player.findOne({where: {id: quizz.creatorPlayerId}})
+
+    let pdfData = {
+        quizzId: playerScoreRes.quizzId,
+        playerScore: playerScoreRes.playerScore,
+        quizzTotalScore: playerScoreRes.quizzTotalScore,
+        playerName: player.username,
+        quizzName: quizz.title,
+        quizzAuthorName: quizzAuthor.username
     }
 
-    return callback(playerScoreData)
+    return callback(pdfData)
 }
 
 const buildScorePdf = (playerScoreId, callback) => {

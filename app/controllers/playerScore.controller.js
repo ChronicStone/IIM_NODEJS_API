@@ -13,13 +13,14 @@ exports.createPlayerScore = (req, res) => {
         quizzTotalScore: req.body.quizzTotalScore,
         playerAwnsers: req.body.playerAwnsers,
     }).then((data) => {
-        res.send({success: true, data: data})
         fileHandler.buildScorePdf(data.id, (data, err) => {
-            if(err) console.error(err)
+            if(err) {
+                res.send({success: false, message: err})
+            }
             if(data) {
-                fileHandler.uploadCertificateS3(data, (result, err) => {
-                    if(err) console.error(err)
-                    if(result) console.log(result)
+                fileHandler.uploadCertificateS3(pdfData, (result, err) => {
+                    if(err) res.send({success: false, message: err})
+                    if(result) res.send({success: true, data: data, file: pdfData.fileUrl})
                 })
             }
         })
