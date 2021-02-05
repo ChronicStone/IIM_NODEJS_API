@@ -14,10 +14,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: false
         },
-        correctAwnserId: {
-            type: DataTypes.INTEGER(20),
-            allowNull: false
-        },
     }, {
         tableName: 'question'
     })

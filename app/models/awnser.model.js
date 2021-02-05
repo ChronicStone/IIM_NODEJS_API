@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
         awnserInput: {
             type: DataTypes.TEXT,
             allowNull: false
+        },
+        isCorrectAwnser: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
         }
     }, {
         tableName: "awnser"

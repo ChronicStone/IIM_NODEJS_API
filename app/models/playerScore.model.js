@@ -22,16 +22,19 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER(20),
             allowNull: false
         },
-        playerAwnsers: {
-            type: DataTypes.TEXT('long'),
-            get: function() {
-                return JSON.parse(this.getDataValue('playerAwnsers'));
-            },
-            set: function(value) {
-                this.setDataValue('playerAwnsers', JSON.stringify(value));
-            },
-        },
-        
+        // playerAwnsers: {
+        //     type: DataTypes.TEXT('long'),
+        //     get: function() {
+        //         return JSON.parse(this.getDataValue('playerAwnsers'));
+        //     },
+        //     set: function(value) {
+        //         this.setDataValue('playerAwnsers', JSON.stringify(value));
+        //     },
+        // },
+        certificate: {
+            type: DataTypes.STRING(1000),
+            allowNull: true,
+        }
     }, {
         tableName: "playerScore"
     })

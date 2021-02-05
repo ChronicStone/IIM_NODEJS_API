@@ -10,14 +10,15 @@ db.sequelize.sync({ force: false });
 app.use(bodyParser.json({ limit: "50mb", extended: true }));
 // parse requests of content-type - application/x-www-form-urlencoded (Not necessary here I think)
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+app.use( express.static( "public" ) );
 
 app.get("/", (req, res) => {
-    res.json({ message: "Welcome to the MangaReader API" });
+    res.json({ message: "Welcome to the QUIZZ API" });
 });
 
 require("./app/routes/index.js")(app)
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 2020;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });
