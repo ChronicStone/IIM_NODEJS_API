@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use( express.static( "public" ) );
 
 app.get("/", (req, res) => {
-    res.json({ message: "Welcome to the MangaReader API" });
+    res.json({ message: "Welcome to the QUIZZ API" });
 });
 
 require("./app/routes/index.js")(app)
