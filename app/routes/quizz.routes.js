@@ -1,11 +1,12 @@
 module.exports = (app) => {
     const Quizz = require('../controllers/quizz.controller.js')
-    
-    app.post('/quizz/create', Quizz.createQuizz)
-    app.put('/quizz/edit/:id', Quizz.editQuizz)
+    const authJwt = require("../middlewares/authJwt.middleware")
+
+    app.post('/quizz/create', authJwt.verifyToken, Quizz.createQuizz)
+    app.put('/quizz/edit/:quizzId', Quizz.editQuizz)
     app.get('/quizz', Quizz.getAllQuizz)
-    app.get('/quizz/:id', Quizz.getQuizzById)
-    app.delete('/quizz/disable/:id', Quizz.disableQuizz)
-    app.delete('/quizz/delete/:id', Quizz.deleteQuizz)
+    app.get('/quizz/:quizzId', Quizz.getQuizzById)
+    app.delete('/quizz/disable/:quizzId', Quizz.disableQuizz)
+    app.delete('/quizz/delete/:quizzId', Quizz.deleteQuizz)
    
 }

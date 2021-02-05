@@ -1,17 +1,35 @@
 const db = require("../models")
 
 exports.createQuestion = (req, res) => {
-    if(!req.body.quizzId || !req.body.questionInput || !req.body.correctAwnserId) {
+    if(!req.body.quizzId || !req.body.questionInput || !req.body.awnsers) {
         res.send({success: false, message: "Missing fields"})
         return;
     }
 
     db.question.create({
-        quizzId: req.body.Question_number,
+        quizzId: req.body.quizzId,
         questionInput: req.body.questionInput,
-        correctAwnserId: req.body.correctAwnserId,
-    }).then((data) => {
-        res.send({success: true, data: data})
+    }).then((questionData) => {
+        Promise.all(req.body.awnsers.map(awnser => {
+            return new Promise((resolve, reject) => {
+                db.awnser.create({
+                    questionId: questionData.id,
+                    awnserInput: awnser.awnserInput,
+                    isCorrectAwnser: awnser.isCorrectAwnser
+                }).then((awnserData) => {
+                    resolve(awnserData)
+                }).catch((err) => {
+                    reject(err.message)
+                })
+            })
+        })).then((awnserData) => {
+            let result = questionData
+            result.awnsers = awnserData
+            res.send({success: true, data: result})
+        }).catch((err) => {
+            console.error(err)
+            res.send({success: false, message: err})
+        })
     }).catch((err) => {
         console.error(err)
         res.send({success: false, message: err.message})
@@ -19,56 +37,39 @@ exports.createQuestion = (req, res) => {
 }
 
 exports.editQuestion = (req, res) => {
-    if(!req.body.quizzId || !req.body.questionInput || !req.body.correctAwnserId) {
-        res.send({success: false, message: "Missing fields"})
+    if(!req.params.questionId){
+        res.send({success: false, message: "Missing question id"})
         return;
     }
 
-    if(!req.params.id){
-        res.send({success: false, message: "Missing quizz id"})
-        return;
-    }
-
-    if(db.question.find({where: {id : req.params.id}})){
-        db.question.update({
-            title: req.body.Question_number,
-            description: req.body.title,
-            creatorPlayerId: req.body.createQuestion,
-        },{
-            where : {
-                Question_id:req.params.id
-           }
-        }).then(() => {
-            res.send({success: true})
-        }).catch((err) => {
-            console.error(err)
-            res.send({success: false, message: err.message})
-        })
-    }
-    else{
-        res.send({success: false, message:"Question not found"})
-    }
+    db.question.update({
+        questionInput: req.body.questionInput
+    },{
+        where : {
+            id:req.params.questionId
+       }
+    }).then(() => {
+        res.send({success: true})
+    }).catch((err) => {
+        console.error(err)
+        res.send({success: false, message: err.message})
+    })
 }
 
 exports.deleteQuestion = (req, res) => {
-    if(!req.params.id) {
+    if(!req.params.questionId) {
         res.send({success: false, message: "Missing Question ID as parameter"})
         return;
     }
 
-    if(db.question.find({where: {id : req.params.id}})){
-        db.question.destroy({
-            where: {
-                id: req.params.id
-            }
-        }).then(() => {
-            res.send({success: true})
-        }).catch((err) => {
-            console.error(err)
-            res.send({success: false, message: err.message})
-        })
-    }
-    else{
-        res.send({success:false, message:"Question not found"})
-    }
+    db.question.destroy({
+        where: {
+            id: req.params.questionId
+        }
+    }).then(() => {
+        res.send({success: true})
+    }).catch((err) => {
+        console.error(err)
+        res.send({success: false, message: err.message})
+    })
 }

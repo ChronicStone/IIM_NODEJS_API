@@ -1,55 +1,67 @@
 const db = require("../models")
+const md5 = require("md5")
+const jwt = require("jsonwebtoken")
 
 exports.createPlayer = (req, res) => {
-    if(!req.body.quizzId || !req.body.playerInput || !req.body.correctAwnserId) {
+    if(!req.body.username || !req.body.password) {
         res.send({success: false, message: "Missing fields"})
         return;
     }
 
-    db.player.create({
-        username: req.body.username,
-        password: req.body.password,
+    db.player.findOne({
+        where: {username: req.body.username}
     }).then((data) => {
-        res.send({success: true, data: data})
+        if(data) {
+            res.send({success: false, message: "Username not available."})
+            return
+        } else {
+            db.player.create({
+                username: req.body.username,
+                password: req.body.password,
+            }).then(() => {
+                res.send({ success: true })
+            }).catch((err) => {
+                console.error(err)
+                res.send({success: false, message: err.message})
+            })
+        }
     }).catch((err) => {
         console.error(err)
         res.send({success: false, message: err.message})
     })
 }
 
-exports.editPlayer = (req, res) => {
-    if(!req.body.quizzId || !req.body.playerInput || !req.body.correctAwnserId) {
-        res.send({success: false, message: "Missing fields"})
-        return;
+exports.playerAuth = (req, res) => {
+    if(!req.body.username || !req.body.password) {
+        res.send({success: false, message: "Missing player ID"})
+        return
     }
 
-    if(!req.params.id){
-        res.send({success: false, message: "Missing quizz id"})
-        return;
-    }
-
-    if(db.player.find({where: {id : req.params.id}})){
-        db.player.update({
-            username: req.body.Player_number,
-            password: req.body.title,
-        },{
-            where : {
-                Player_id:req.params.id
-           }
-        }).then(() => {
-            res.send({success: true})
-        }).catch((err) => {
-            console.error(err)
-            res.send({success: false, message: err.message})
-        })
-    }
-    else{
-        res.send({success: false, message:"Player not found"})
-    }
+    db.player.findOne({
+        where: { 
+            username: req.body.username,
+            password: req.body.password
+        },
+        attributes: ['id', 'username']
+    }).then((playerData) => {
+        if(!playerData) res.send({success: false, message: "Player not found"})
+        else {
+            const token = jwt.sign({
+                id: playerData.id,
+                username: playerData.username
+            }, process.env.BACKEND_SECRET_KEY, {
+                expiresIn: '12h'
+            })
+    
+            res.send({success: true, player: playerData, accessToken: token})
+        } 
+    })
 }
 
-exports.getAllPlayer = (req, res) => {
-    db.player.findAll()
+exports.getAllPlayers = (req, res) => {
+    db.player.findAll({
+        attributes: ['id', 'username']
+    })
     .then((data) => {
         res.send({success:true, data:data})
     }).catch((err) => {
@@ -58,25 +70,35 @@ exports.getAllPlayer = (req, res) => {
 }
 
 exports.getPlayerById = (req, res) => {
-    if(!req.params.Id){
-        res.send({success: false, message: "Missing username id"})
+    if(!req.params.playerId){
+        res.send({success: false, message: "Missing player id"})
         return;
     }
-    if(db.player.find({where: {id : req.params.id}})){
-        db.player.findOne({
+
+    db.player.findOne({ 
+        attributes: ['id', 'username'],
+        where: { id : req.params.playerId },
+        include: [{
+            model: db.playerScore,
             where: {
-                id : Id
+                playerId: db.Sequelize.col('player.id')
             },
-        }).then((data)=>{
-            res.send({sucess:true, data:data})
-        }).catch((err) =>{
-            console.log(err)
-            res.send({success:false, message:err.message})
-        })
-    }
-    else{
-        res.send({success:false, message:"Player not found"})
-    }
+            required: false
+        }, {
+            model: db.quizz,
+            where: {
+               creatorPlayerId: db.Sequelize.col('player.id') 
+            },
+            required: false
+        }]
+    })
+    .then((data)=>{
+        if(data) res.send({sucess:true, data:data})
+        else res.send({success:false, message:"Player not found"})
+    }).catch((err) =>{
+        console.log(err)
+        res.send({success:false, message:err.message})
+    })
 }
 
 exports.deletePlayer = (req, res) => {
@@ -85,19 +107,16 @@ exports.deletePlayer = (req, res) => {
         return;
     }
 
-    if(db.player.find({where: {id : req.params.id}})){
-        db.player.destroy({
-            where: {
-                id: req.params.id
-            }
-        }).then(() => {
-            res.send({success: true})
-        }).catch((err) => {
-            console.error(err)
-            res.send({success: false, message: err.message})
-        })
-    }
-    else{
-        res.send({success:false, message:"Player not found"})
-    }
+    db.player.destroy({
+        where: {
+            id: req.params.id
+        }
+    }).then((res) => {
+        if(res) res.send({success: true})
+        else res.send({sucess: false})
+        
+    }).catch((err) => {
+        console.error(err)
+        res.send({success: false, message: err.message})
+    })
 }

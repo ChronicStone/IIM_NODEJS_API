@@ -1,9 +1,10 @@
 module.exports = (app) => {
     const Player = require('../controllers/player.controller.js')
+    const authJwt = require("../middlewares/authJwt.middleware")
 
     app.post('/player/create', Player.createPlayer)
-    app.put('/player/edit/:Id', Player.editPlayer)
-    app.get('/player', Player.getAllPlayer)
-    app.get('/player/:Id', Player.getPlayerById)
-    app.delete('/player/delete/:Id', Player.deletePlayer)
+    app.post('/player/auth', Player.playerAuth)
+    app.get('/player', Player.getAllPlayers)
+    app.get('/player/:playerId', Player.getPlayerById)
+    app.delete('/player/delete/:playerId', Player.deletePlayer)
 }

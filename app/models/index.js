@@ -30,8 +30,8 @@ db.playerScore = require("./playerScore.model.js")(sequelize, Sequelize);
 db.quizz.hasMany(db.question, { foreignKey: "quizzId", CONSTRAINT: false })
 db.question.belongsTo(db.quizz, { foreignKey: "quizzId" })
 
-db.question.hasMany(db.awnser, { foreignKey: "quizzId", CONSTRAINT: false })
-db.awnser.belongsTo(db.question, { foreignKey: "quizzId" })
+db.question.hasMany(db.awnser, { foreignKey: "questionId", CONSTRAINT: false })
+db.awnser.belongsTo(db.question, { foreignKey: "questionId" })
 
 db.player.hasMany(db.playerScore, { foreignKey: "playerId", CONSTRAINT: false })
 db.playerScore.belongsTo(db.player, { foreignKey: "playerId" })
