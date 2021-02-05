@@ -31,7 +31,10 @@ module.exports = (sequelize, DataTypes) => {
                 this.setDataValue('playerAwnsers', JSON.stringify(value));
             },
         },
-        
+        certificate: {
+            type: DataTypes.STRING(1000),
+            allowNull: true,
+        }
     }, {
         tableName: "playerScore"
     })
