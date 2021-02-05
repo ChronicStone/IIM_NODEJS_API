@@ -137,8 +137,9 @@ const uploadCertificateS3 = (file, callback) => {
                         }).then(() => {
                             console.log("FILE STORED IN S3");
                             console.log("FileURL", process.env.AWS_S3_URL + filePath);
-                            return callback({fileUrl: procesS.env.AWS_S3_URL + filePath});
+                            return callback({fileUrl: process.env.AWS_S3_URL + filePath});
                         }).catch((err) => {
+                            console.error(err)
                             return callback(null, err)
                         })
                     }

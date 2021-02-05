@@ -1,7 +1,9 @@
 const db = require("../models")
 const fileHandler = require("../services/filesHandler.service")
+
+
 exports.createPlayerScore = (req, res) => {
-    if(!req.body.playerId || !req.body.quizzId || !req.body.playerScore || !req.body.quizzTotalScore || !req.body.playerAwnsers) {
+    if(!req.body.playerId || !req.body.quizzId || !req.body.playerScore || !req.body.quizzTotalScore) {
         res.send({success: false, message: "Missing fields"})
         return;
     }
@@ -11,16 +13,16 @@ exports.createPlayerScore = (req, res) => {
         quizzId: req.body.quizzId,
         playerScore: req.body.playerScore,
         quizzTotalScore: req.body.quizzTotalScore,
-        playerAwnsers: req.body.playerAwnsers,
+        // playerAwnsers: req.body.playerAwnsers,
     }).then((data) => {
         fileHandler.buildScorePdf(data.id, (data, err) => {
             if(err) {
                 res.send({success: false, message: err})
             }
             if(data) {
-                fileHandler.uploadCertificateS3(pdfData, (result, err) => {
+                fileHandler.uploadCertificateS3(data, (pdfData, err) => {
                     if(err) res.send({success: false, message: err})
-                    if(result) res.send({success: true, data: data, file: pdfData.fileUrl})
+                    if(pdfData) res.send({success: true, certificate: pdfData.fileUrl})
                 })
             }
         })
