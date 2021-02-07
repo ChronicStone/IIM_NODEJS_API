@@ -13,10 +13,10 @@ const s3 = new aws.S3({
     region: process.env.AWS_S3_REGION,
 });
 
-const uploadFile = (fileData, callback) => {
-    buf = Buffer.from(fileData.file.replace(/^data:image\/\w+;base64,/, ""),'base64')
+const uploadFile = (file, callback) => {
+    buf = Buffer.from(file.replace(/^data:image\/\w+;base64,/, ""),'base64')
     var data = {
-      Key: `${fileData.licenseId}/${fileData.chapterId}/${fileData.pageNumber}_${Date.now()}.png`,
+      Key: `avatar/${Date.now()}.png`,
       Body: buf,
       ContentEncoding: 'base64',
       ContentType: 'image/png',

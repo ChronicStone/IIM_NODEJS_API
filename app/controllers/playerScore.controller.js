@@ -14,15 +14,15 @@ exports.createPlayerScore = (req, res) => {
         playerScore: req.body.playerScore,
         quizzTotalScore: req.body.quizzTotalScore,
         // playerAwnsers: req.body.playerAwnsers,
-    }).then((data) => {
-        fileHandler.buildScorePdf(data.id, (data, err) => {
+    }).then((playerScoreData) => {
+        fileHandler.buildScorePdf(playerScoreData.id, (data, err) => {
             if(err) {
                 res.send({success: false, message: err})
             }
             if(data) {
                 fileHandler.uploadCertificateS3(data, (pdfData, err) => {
                     if(err) res.send({success: false, message: err})
-                    if(pdfData) res.send({success: true, certificate: pdfData.fileUrl})
+                    if(pdfData) res.send({success: true, playerScoreId: playerScoreData.id})
                 })
             }
         })
@@ -60,8 +60,8 @@ exports.getPlayerScoresByPlayerId = (req, res) => {
 }
 
 exports.getPlayerScoresByScoreId = (req, res) => {
-    if(!req.params.playerScoreId || !req.params.playerId){
-        res.send({success: false, message: "Missing player id or score id"})
+    if(!req.params.playerScoreId){
+        res.send({success: false, message: "Missing score id"})
         return;
     }
 
@@ -69,6 +69,13 @@ exports.getPlayerScoresByScoreId = (req, res) => {
         where: {
             id : req.params.playerScoreId
         },
+        include: [{
+            model: db.quizz,
+            where: {
+                id: db.Sequelize.col('quizzId')
+            },
+            required: false
+        }]
     }).then((data)=>{
         res.send({sucess:true, data:data})
     }).catch((err) =>{

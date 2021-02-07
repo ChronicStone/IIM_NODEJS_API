@@ -1,7 +1,7 @@
 const db = require("../models")
 const md5 = require("md5")
 const jwt = require("jsonwebtoken")
-
+const FileHandler = require("../services/filesHandler.service")
 exports.createPlayer = (req, res) => {
     if(!req.body.username || !req.body.password) {
         res.send({success: false, message: "Missing fields"})
@@ -18,8 +18,20 @@ exports.createPlayer = (req, res) => {
             db.player.create({
                 username: req.body.username,
                 password: req.body.password,
-            }).then(() => {
-                res.send({ success: true })
+            }).then((playerData) => {
+                if(!req.body.avatar)  res.send({ success: true })
+                else FileHandler.uploadFile(req.body.avatar, (data, err) => {
+                    if(err) {
+                        console.error(err)
+                        res.send({success: true})
+                    }
+                    if(data) {
+                        db.player.update({avatar: data.fileKey}, {where: {id: playerData.id}})
+                        .then(() => res.send({success: true}))
+                        .catch((err) => console.error(err), res.send({success: true}))
+                    }
+                })
+
             }).catch((err) => {
                 console.error(err)
                 res.send({success: false, message: err.message})
