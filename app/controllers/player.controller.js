@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken")
 const FileHandler = require("../services/filesHandler.service")
 exports.createPlayer = (req, res) => {
     if(!req.body.username || !req.body.password) {
+        console.log(req.body)
         res.send({success: false, message: "Missing fields"})
         return;
     }

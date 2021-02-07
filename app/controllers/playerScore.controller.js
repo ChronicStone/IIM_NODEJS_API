@@ -33,7 +33,15 @@ exports.createPlayerScore = (req, res) => {
 }
 
 exports.getAllPlayerScore = (req, res) => {
-    db.playerScore.findAll()
+    db.playerScore.findAll({
+        include: [{
+            model: db.player,
+            where: {
+                id: db.Sequelize.col('playerId')
+            },
+            required: false
+        }]
+    })
     .then((data) => {
         res.send({success:true, data:data})
     }).catch((err) => {
