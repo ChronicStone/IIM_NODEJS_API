@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
         password: {
             type: DataTypes.STRING(255),
             allowNull: false
+        },
+        avatar: {
+            type: DataTypes.STRING(1000),
+            allowNull: false
         }
     }, {
         tableName: "player"

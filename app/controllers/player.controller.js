@@ -54,7 +54,7 @@ exports.playerAuth = (req, res) => {
             username: req.body.username,
             password: req.body.password
         },
-        attributes: ['id', 'username']
+        attributes: ['id', 'username', 'avatar']
     }).then((playerData) => {
         if(!playerData) res.send({success: false, message: "Player not found"})
         else {
@@ -72,7 +72,7 @@ exports.playerAuth = (req, res) => {
 
 exports.getAllPlayers = (req, res) => {
     db.player.findAll({
-        attributes: ['id', 'username']
+        attributes: ['id', 'username', 'avatar']
     })
     .then((data) => {
         res.send({success:true, data:data})
@@ -88,7 +88,7 @@ exports.getPlayerById = (req, res) => {
     }
 
     db.player.findOne({ 
-        attributes: ['id', 'username'],
+        attributes: ['id', 'username', 'avatar'],
         where: { id : req.params.playerId },
         include: [{
             model: db.playerScore,
