@@ -96,7 +96,14 @@ exports.getPlayerById = (req, res) => {
             where: {
                 playerId: db.Sequelize.col('player.id')
             },
-            required: false
+            required: false,
+            include: [{
+                model: db.quizz,
+                where: {
+                    id: db.Sequelize.col('playerScores.quizzId')
+                },
+                required: false
+            }]
         }, {
             model: db.quizz,
             where: {
