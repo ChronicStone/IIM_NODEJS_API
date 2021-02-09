@@ -92,6 +92,24 @@ exports.getQuizzById = (req, res) => {
     })
 }
 
+exports.getQuizzByCreatorId = (req, res) => {
+    if(!req.params.playerId) {
+        res.send({success: false, message: "Missing PlayerId!"})
+        return
+    }
+
+    db.quizz.findAll({
+        where: {
+            creatorPlayerId: req.params.playerId
+        }
+    }).then((data) => {
+        res.send({success: true, data: data})
+    }).catch((err) => {
+        console.error(err)
+        res.send({success: false, message: err.message})
+    })
+}
+
 exports.deleteQuizz = (req, res) => {
     if(!req.params.quizzId) {
         res.send({success: false, message: "Missing Quizz ID as parameter"})
