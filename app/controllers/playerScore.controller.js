@@ -3,11 +3,6 @@ const fileHandler = require("../services/filesHandler.service")
 
 
 exports.createPlayerScore = (req, res) => {
-    if(!req.body.playerId || !req.body.quizzId || !req.body.playerScore || !req.body.quizzTotalScore) {
-        res.send({success: false, message: "Missing fields"})
-        return;
-    }
-
     db.playerScore.create({
         playerId: req.body.playerId,
         quizzId: req.body.quizzId,
