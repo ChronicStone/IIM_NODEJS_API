@@ -33,9 +33,35 @@ exports.editQuizz = (req, res) => {
     })
 }
 
-exports.getAllQuizz = (req, res) => {
-    db.quizz.findAll()
+exports.changeQuizzMode = (req, res) => {
+    db.quizz.findOne({where :{id: req.params.quizzId}})
     .then((data) => {
+        if(data && data.creatorPlayerId === req.player.id) {
+            db.quizz.update({published: req.body.public}, {where: {id: req.params.quizzId}})
+            .then(() => {
+                res.send({success: true})
+            })
+            .catch((err) => {
+                res.send({success: false, message: err.message})
+                return
+            })
+        } else {
+            res.send({success: false, message: "This quizz does not belongs to you, you cannot change its mode."})
+        }
+    })
+}
+
+exports.getAllQuizz = (req, res) => {
+    db.quizz.findAll({
+        where: {published: true},
+        include: [{
+            model: db.player,
+            attributes: ['id', 'username', 'avatar'],
+            where: {
+                id: db.Sequelize.col('quizz.creatorPlayerId')
+            }
+        }]
+    }).then((data) => {
         res.send({success:true, data:data})
     }).catch((err) => {
         console.error(err)
@@ -66,7 +92,7 @@ exports.getQuizzById = (req, res) => {
                         questionId: db.Sequelize.col('questions.id')
                     },
                     required: false,
-                },
+                }
             ],
         }, {
             model: db.playerScore,
@@ -83,6 +109,11 @@ exports.getQuizzById = (req, res) => {
                 quizzId: db.Sequelize.col('quizz.id')
             },
             required: false
+        }, {
+            model: db.player,
+            where:  {
+                id: db.Sequelize.col('quizz.creatorPlayerId')
+            }
         }]
     }).then((data)=>{
         res.send({ success:true, data:data })
@@ -105,7 +136,6 @@ exports.getQuizzByCreatorId = (req, res) => {
     }).then((data) => {
         res.send({success: true, data: data})
     }).catch((err) => {
-        console.error(err)
         res.send({success: false, message: err.message})
     })
 }

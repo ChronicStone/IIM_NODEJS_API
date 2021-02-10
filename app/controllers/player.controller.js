@@ -27,6 +27,7 @@ exports.createPlayer = (req, res) => {
                         res.send({success: true})
                     }
                     if(data) {
+                        console.log({data})
                         db.player.update({avatar: data.fileKey}, {where: {id: playerData.id}})
                         .then(() => res.send({success: true}))
                         .catch((err) => console.error(err), res.send({success: true}))

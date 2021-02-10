@@ -23,13 +23,13 @@ const uploadFile = (file, callback) => {
       Bucket: process.env.AWS_S3_BUCKET,
     };
 
-    s3.putObject(data, function(err, data){
+    s3.putObject(data, function(err, result){
         if (err) {
           console.err({S3UploadErr: err});
           return callback(null, err)
         } else {
           console.info(`succesfully uploaded the page to S3 !`);
-          return callback({success: true, fileKey: data.key})
+          return callback({success: true, fileKey: data.Key})
         }
     });
 }
