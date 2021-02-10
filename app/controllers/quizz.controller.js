@@ -99,7 +99,7 @@ exports.getQuizzById = (req, res) => {
             attributes: ['id', 'playerId', 'playerScore', 'quizzTotalScore'],
             include: [{
                 model: db.player,
-                attributes: ['id', 'username'],
+                attributes: ['id', 'username', 'avatar'],
                 where: {
                     id: db.Sequelize.col('playerScores.playerId')
                 },
