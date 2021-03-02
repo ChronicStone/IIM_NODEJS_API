@@ -48,8 +48,30 @@ exports.editQuestion = (req, res) => {
         where : {
             id:req.params.questionId
        }
-    }).then(() => {
-        res.send({success: true})
+    }).then((questionData) => {
+        Promise.all(req.body.awnsers.map(awnser => {
+            return new Promise((resolve, reject) => {
+                db.awnser.update({
+                    awnserInput: awnser.awnserInput,
+                    isCorrectAwnser: awnser.isCorrectAwnser
+                },{
+                    where : {
+                        id:awnser.id
+                    }
+                }).then((awnserData) => {
+                    resolve(awnserData)
+                }).catch((err) => {
+                    reject(err.message)
+                })
+            })
+        })).then((awnserData) => {
+            let result = questionData
+            result.awnsers = awnserData
+            res.send({success: true, data: result})
+        }).catch((err) => {
+            console.error(err)
+            res.send({success: false, message: err})
+        })
     }).catch((err) => {
         console.error(err)
         res.send({success: false, message: err.message})

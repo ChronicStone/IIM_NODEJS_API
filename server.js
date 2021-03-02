@@ -11,7 +11,7 @@ app = express();
 db.sequelize.sync({ force: false });
 
 var corsOptions = {
-    origin: "*",
+    origin: "*",    
 };
 app.use(cors(corsOptions));
 // pars
