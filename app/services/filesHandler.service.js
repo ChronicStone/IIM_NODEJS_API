@@ -85,6 +85,7 @@ const buildScorePdf = (playerScoreId, callback) => {
         "footer": {
             "height": "10mm",
        },
+       "zoomFactor": "0.6"
     };
 
 
