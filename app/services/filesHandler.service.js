@@ -68,7 +68,7 @@ const compilePdfData = async (playerScoreId, callback) => {
 }
 
 const buildScorePdf = (playerScoreId, callback) => {
-    const htmlContent = fs.readFileSync(__dirname + `/../../../public/sample.html`, {encoding: 'utf8'})
+    const htmlContent = fs.readFileSync(__dirname + `/sample.html`, {encoding: 'utf8'})
     function getHeight(fileType) {
         if (fileType === 'score_report') return '29.7cm'
         else return '21cm'
