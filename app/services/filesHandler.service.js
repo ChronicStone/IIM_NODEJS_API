@@ -68,82 +68,45 @@ const compilePdfData = async (playerScoreId, callback) => {
 }
 
 const buildScorePdf = (playerScoreId, callback) => {
-    const htmlContent = fs.readFileSync(__dirname + `/sample.html`, {encoding: 'utf8'})
-    function getHeight(fileType) {
-        if (fileType === 'score_report') return '29.7cm'
-        else return '21cm'
-    }
-    function getWidth(fileType) {
-        if (fileType === 'official_certificate') return '29.7cm'
-        else return '21cm'
-    }
+    compilePdfData(playerScoreId, (playerScoreData, err) => {
+        if(err) return callback(null, err)
+        if(playerScoreData) {
+            console.log("### STARTING FILE RENDER ###")
+            ejs.renderFile(path.join(__dirname, '../../views/', `certificate.ejs`), playerScoreData, (err, pdfContent) => {
+                if (err) {
+                    console.log("=> FILE RENDER ERROR <+")
+                    console.error(err)
+                    return callback(null, err)
+                }
+                
+                const fileName = `${playerScoreData.quizzId}_${playerScoreData.playerName}_${Date.now()}.pdf`
+                let options = {
+                    "height": "21cm",        // allowed units: mm, cm, in, px
+                    "width": "29.7cm",
+                    "header": {
+                        "height": "0mm"
+                    },
+                    "footer": {
+                        "height": "0mm",
+                    },
+                };
 
-    let options = {
-        "height": "29.7cm",        // allowed units: mm, cm, in, px
-        "width": "21cm",
-        "border": "5mm",
-        "footer": {
-            "height": "10mm",
-       },
-       "zoomFactor": "0.6"
-    };
+                pdf.create(pdfContent, options).toFile(__dirname + `../../../public/certificates/${fileName}`, function (err, data) {
+                    if (data) console.log("### PDF FILE GENERATED ###");
+                    if (err) console.log(err)
 
-
-    const fileName = `${Date.now()}.pdf`
-    pdf.create(htmlContent, options).toFile(__dirname + `../../../public/certificates/${fileName}`, function (err, data) {
-        if (data) console.log("### PDF FILE GENERATED ###");
-        if (err) console.log(err)
-
-        const fileData = {
-            fileName: fileName,
-            fileUrl: `${process.env.API_BASEURL}/${'certificates'}/${fileName}`,
-            format: "pdf",
-            playerScoreId: playerScoreId
+                    const fileData = {
+                        fileName: fileName,
+                        fileUrl: `${process.env.API_BASEURL}/${'certificates'}/${fileName}`,
+                        format: "pdf",
+                        playerScoreId: playerScoreId
+                    }
+                    return callback(fileData, err)
+                })
+                
+            })
         }
-        return callback(fileData, err)
     })
-
-
-
-    // compilePdfData(playerScoreId, (playerScoreData, err) => {
-    //     if(err) return callback(null, err)
-    //     if(playerScoreData) {
-    //         console.log("### STARTING FILE RENDER ###")
-    //         ejs.renderFile(path.join(__dirname, '../../views/', `certificate.ejs`), playerScoreData, (err, pdfContent) => {
-    //             if (err) {
-    //                 console.log("=> FILE RENDER ERROR <+")
-    //                 console.error(err)
-    //                 return callback(null, err)
-    //             }
-                
-    //             const fileName = `${playerScoreData.quizzId}_${playerScoreData.playerName}_${Date.now()}.pdf`
-    //             let options = {
-    //                 "height": "21cm",        // allowed units: mm, cm, in, px
-    //                 "width": "29.7cm",
-    //                 "header": {
-    //                     "height": "0mm"
-    //                 },
-    //                 "footer": {
-    //                     "height": "0mm",
-    //                 },
-    //             };
-
-    //             pdf.create(pdfContent, options).toFile(__dirname + `../../../public/certificates/${fileName}`, function (err, data) {
-    //                 if (data) console.log("### PDF FILE GENERATED ###");
-    //                 if (err) console.log(err)
-
-    //                 const fileData = {
-    //                     fileName: fileName,
-    //                     fileUrl: `${process.env.API_BASEURL}/${'certificates'}/${fileName}`,
-    //                     format: "pdf",
-    //                     playerScoreId: playerScoreId
-    //                 }
-    //                 return callback(fileData, err)
-    //             })
-                
-    //         })
-    //     }
-    // })
 }
 
 const uploadCertificateS3 = (file, callback) => {
