@@ -88,7 +88,7 @@ const buildScorePdf = (playerScoreId, callback) => {
     };
 
 
-    const fileName = `${assessId}_${Date.now()}.pdf`
+    const fileName = `${playerScoreData.quizzId}_${playerScoreData.playerName}_${Date.now()}.pdf`
     pdf.create(htmlContent, options).toFile(__dirname + `../../../public/certificates/${fileName}`, function (err, data) {
         if (data) console.log("### PDF FILE GENERATED ###");
         if (err) console.log(err)
