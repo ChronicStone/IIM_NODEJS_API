@@ -16,8 +16,8 @@ exports.createPlayerScore = (req, res) => {
             }
             if(data) {
                 fileHandler.uploadCertificateS3(data, (pdfData, err) => {
-                    if(err) res.send({success: false, message: err})
-                    if(pdfData) res.send({success: true, playerScoreId: playerScoreData.id})
+                    if(err) console.error({err})
+                    res.send({success: true, playerScoreId: playerScoreData.id})
                 })
             }
         })

@@ -127,7 +127,7 @@ const uploadCertificateS3 = (file, callback) => {
                 Bucket: process.env.AWS_S3_BUCKET,
             },
                 function (error, data) {
-                    if (error) return callback(null, err)
+                    if (error) return callback(null, error)
                     if(data) {
                         console.log("QUIZZ CERTIFICATE UPLOADED TO S3");
                         db.playerScore.update({
